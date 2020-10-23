@@ -11,6 +11,7 @@ body {
     font-size: 20px;
     margin: 0;
     padding: 0;
+
 }
 
 .weather-list li {
@@ -236,7 +237,7 @@ main .favorites .new-city input[type=submit] {
 main .cities .row{
     display: flex;
     /*justify-content: space-between;*/
-    flex-wrap: wrap;
+    /*flex-wrap: wrap;*/
     /*margin-bottom: 50px;*/
 }
 
@@ -293,6 +294,14 @@ main .cities .data .main-info .delete:hover {
     background-color: #778c96;
 }
 
+main .cities .data:nth-child(odd) .weather-list {
+    /*margin-right: 100px;*/
+}
+
+main .cities .data:nth-child(odd) .main-info {
+    /*margin-right: 100px;*/
+}
+
 
 @media screen and (max-width: 1100px) {
     .bigbtn {
@@ -338,6 +347,7 @@ main .cities .data .main-info .delete:hover {
         margin-bottom: 50px;
     }
 
+
     main .favorites {
         flex-direction: column;
         margin-bottom: 0 !important;
@@ -370,12 +380,15 @@ main .cities .data .main-info .delete:hover {
     main .cities .row {
         flex-direction: column;
         margin-bottom: 0 !important;
+        flex-wrap: wrap;
     }
 
     main .cities .row .data {
         margin-right: 0;
         margin-bottom: 50px;
     }
+
+
 }
 
 
