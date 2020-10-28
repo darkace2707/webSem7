@@ -87,7 +87,7 @@ header .clearfix {
     opacity: 0;
 }
 
-header .title h1 {
+header .title {
     margin: 0;
     padding: 0;
     font-weight: normal;
@@ -103,11 +103,11 @@ header .refresh {
     text-align: center;
 }
 
-header .refresh .bigbtn {
+header .bigbtn {
     padding: 10px 50px;
 }
 
-header .refresh .bigbtn .sub-text {
+header .refresh .sub-text {
     opacity: 0;
 }
 
@@ -134,7 +134,7 @@ main .main-city .info {
     /*min-width: 400px;*/
 }
 
-main .main-city .info h3 {
+main .main-city .info h2 {
     margin: 0;
     padding: 0;
     font-size: 40px;
@@ -235,18 +235,29 @@ main .favorites .new-city input[type=submit] {
 
 
 main .cities .row{
-    display: flex;
+    /*display: flex;*/
+
     /*justify-content: space-between;*/
     /*flex-wrap: wrap;*/
     /*margin-bottom: 50px;*/
 }
 
+main .cities {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 100px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    /*margin-bottom: 50px;*/
+}
+
 main .cities .data {
-    flex: 50%;
+    /*flex: 50%;*/
 }
 
 main .cities .data:nth-child(odd) {
-    margin-right: 100px;
+    /*margin-right: 100px;*/
 }
 
 main .cities .data .main-info {
@@ -314,14 +325,13 @@ main .cities .data:nth-child(odd) .main-info {
     }
 
     header .refresh {
-        text-align: right;
     }
 
-    header .refresh .bigbtn .sub-text {
+    header .refresh .sub-text {
         opacity: 1;
     }
 
-    header .refresh .bigbtn .main-text {
+    header .refresh .main-text {
         position: absolute;
         opacity: 0;
     }
@@ -373,57 +383,21 @@ main .cities .data:nth-child(odd) .main-info {
         margin-right: 0;
     }
 
-    main .cities {
-
-    }
-
     main .cities .row {
-        flex-direction: column;
-        margin-bottom: 0 !important;
-        flex-wrap: wrap;
+        /*flex-direction: column;*/
+        /*flex-wrap: wrap;*/
     }
 
-    main .cities .row .data {
+    main .cities {
+        grid-template-columns: 1fr;
+        grid-gap: 0;
+        margin-bottom: 0 !important;
+    }
+
+    main .cities .data {
         margin-right: 0;
         margin-bottom: 50px;
     }
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*main div {*/
-/*    background-color: lightgreen;*/
-/*}*/
-
-/*main div:nth-child(2)  {*/
-/*    background-color: lightblue;*/
-/*}*/
-/*main div:nth-child(3)  {*/
-/*    background-color: lightblue;*/
-/*}*/
-/*main div:nth-child(6)  {*/
-/*    background-color: lightblue;*/
-/*}*/
-/*main div:nth-child(7)  {*/
-/*    background-color: lightblue;*/
-/*}*/
-/*main div:nth-child(10)  {*/
-/*    background-color: lightblue;*/
-/*}*/
-/*main div:nth-child(11)  {*/
-/*    background-color: lightblue;*/
-/*}*/
