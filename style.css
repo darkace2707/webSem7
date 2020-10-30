@@ -32,7 +32,7 @@ body {
     text-align: right;
 }
 
-.weather-list .main {
+.weather-list .title {
     color: white;
     font-weight: bold;
 }
@@ -120,7 +120,7 @@ main {
 
 main .main-city {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     /*justify-content: space-between;*/
     margin-bottom: 50px;
     /*background-color: red;*/
@@ -130,7 +130,7 @@ main .main-city .info {
     /*background-color: lightgreen;*/
     /*flex-grow: 1;*/
     flex: 50%;
-    /*margin-right: 100px;*/
+    margin-right: 100px;
     /*min-width: 400px;*/
 }
 
@@ -140,7 +140,7 @@ main .main-city .info h2 {
     font-size: 40px;
     font-family: sans-serif;
     margin-bottom: 20px;
-    margin-right: 100px;
+    /*margin-right: 100px;*/
 }
 
 main .main-city .info .wrapper {
@@ -158,10 +158,10 @@ main .main-city .info .weather-icon {
 main .main-city .info .degrees {
     font-size: 100px;
     line-height: 80px;
-    margin-right: 100px;
+    /*margin-right: 100px;*/
 }
 
-main .main-city .data {
+main .main-city .weather-list {
     /*background-color: lightblue;*/
     flex: 50%;
 }
@@ -341,6 +341,7 @@ main .cities .data:nth-child(odd) .main-info {
     }
 
     main .main-city {
+        flex-wrap: nowrap;
         flex-direction: column;
         margin-bottom: 0 !important;
     }
@@ -351,9 +352,10 @@ main .cities .data:nth-child(odd) .main-info {
 
     main .main-city .info {
         margin-bottom: 30px;
+        margin-right: 0;
     }
 
-    main .main-city .data {
+    main .main-city .weather-list {
         margin-bottom: 50px;
     }
 
