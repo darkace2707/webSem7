@@ -3,7 +3,57 @@ body {
     font-family: serif;
     font-size: 22px;
     margin: 0;
+    width: 100%;
 }
+
+#loader-wrapper {
+    height: 261px;
+    display: none;
+}
+
+#loader {
+    position: relative;
+    left: 50%;
+    top: 50%;
+    z-index: 1;
+    margin: -75px 0 0 -75px;
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #5f6e75;
+    width: 100px;
+    height: 100px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+    /*background-color: #959d9e;*/
+}
+
+#main-loader {
+    position: absolute;
+    left: 50%;
+    top: 200px;
+    z-index: 1;
+    margin: -75px 0 0 -75px;
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #5f6e75;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+    /*background-color: #959d9e;*/
+}
+
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
 
 .weather-list {
     list-style-type: none;
@@ -66,6 +116,7 @@ body {
     border-radius: 5px;
     border: 0;
     height: 51px;
+    outline: none;
 }
 
 .bigbtn:active {
@@ -123,12 +174,14 @@ main .main-city {
     flex-wrap: nowrap;
     /*justify-content: space-between;*/
     margin-bottom: 50px;
+    min-height: 220px;
     /*background-color: red;*/
 }
 
 main .main-city .info {
     /*background-color: lightgreen;*/
     /*flex-grow: 1;*/
+    display: none;
     flex: 50%;
     margin-right: 100px;
     /*min-width: 400px;*/
@@ -163,6 +216,7 @@ main .main-city .info .degrees {
 
 main .main-city .weather-list {
     /*background-color: lightblue;*/
+    display: none;
     flex: 50%;
 }
 
@@ -254,6 +308,7 @@ main .cities {
 
 main .cities .data {
     /*flex: 50%;*/
+    /*min-height: 261px;*/
 }
 
 main .cities .data:nth-child(odd) {
@@ -322,6 +377,8 @@ main .cities .data:nth-child(odd) .main-info {
 
     header {
         grid-template-columns: 2fr 1fr;
+        margin-left: 15px;
+        margin-right: 15px;
     }
 
     header .refresh {
@@ -338,6 +395,11 @@ main .cities .data:nth-child(odd) .main-info {
 
     header .clearfix {
         position: absolute;
+    }
+
+    main {
+        margin-left: 15px;
+        margin-right: 15px;
     }
 
     main .main-city {
@@ -396,10 +458,16 @@ main .cities .data:nth-child(odd) .main-info {
         margin-bottom: 0 !important;
     }
 
+    #loader-wrapper {
+        margin-bottom: 50px;
+    }
+
     main .cities .data {
         margin-right: 0;
         margin-bottom: 50px;
     }
 
-
+    main .cities .data .main-info h3 {
+        font-size: 25px;
+    }
 }

@@ -16,10 +16,12 @@ const cityData = {
     coordinates: {
         latitude: 519.88,
         longitude: 310.42
-    }
+    },
+    cod: 200,
+    message: ""
 };
 
-let cities = document.getElementsByClassName("cities");
+let cities = document.querySelector("main .cities");
 
 let t = document.querySelector('#city-card');
 
@@ -33,19 +35,6 @@ let cityElement = {
     humidityElement: t.content.querySelector(".data .weather-list .humidity .description"),
     coordinatesElement: t.content.querySelector(".data .weather-list .coordinates .description")
 };
-
-// let cityElement = {
-//     nameElement: document.querySelector("#city-card .data .main-info h3"),
-//     degreesElement: document.querySelector("#city-card .data .main-info .degrees"),
-//     iconElement: document.querySelector("#city-card .data .main-info .weather-icon"),
-//     windElement: document.querySelector("#city-card .data .weather-list .wind .description"),
-//     cloudElement: document.querySelector("#city-card .data .weather-list .cloud .description"),
-//     pressureElement: document.querySelector("#city-card .data .weather-list .pressure .description"),
-//     humidityElement: document.querySelector("#city-card .data .weather-list .humidity .description"),
-//     coordinatesElement: document.querySelector("#city-card .data .weather-list .coordinates .description")
-// };
-
-
 
 let mainCityElement = {
     nameElement: document.querySelector("main .main-city .info h2"),
@@ -85,11 +74,11 @@ function capitalizeWords(string) {
 }
 
 function requestWeatherCityData(cityName) {
-    return `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`;
+    return `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`;
 }
 
 function requestWeatherCoordinatesData(latitude, longitude) {
-    return `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`
+    return `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`
 }
 
 function setCityData(data) {
@@ -103,6 +92,8 @@ function setCityData(data) {
     cityData.humidity = data.main.humidity;
     cityData.coordinates.latitude = data.coord.lat;
     cityData.coordinates.longitude = data.coord.lon;
+    cityData.cod = data.cod;
+    cityData.message = data.message;
 }
 
 function displayWeather(city, cityData) {
@@ -121,10 +112,16 @@ function displayWeather(city, cityData) {
 async function getWeather(requestURL) {
     // alert(requestURL);
     await fetch(requestURL).then(function (response) {
-        let data = response.json();
-        return data;
-    }).then(function (data) {
-        setCityData(data);
+        return response.json();
+    }).then(async function (data) {
+        if (data.cod === 200) {
+            await setCityData(data);
+            console.log("success");
+        } else {
+            cityData.cod = data.cod;
+            cityData.message = data.message;
+            console.log(data.cod);
+        }
     });
 }
 
@@ -133,18 +130,29 @@ async function setPosition(position) {
     let latitude = position.coords.latitude;
     let longitude = position.coords.longitude;
     await getWeather(requestWeatherCoordinatesData(latitude, longitude));
+    // alert(cityData.city+'sp');
     // alert(cityData.city);
-    displayWeather(mainCityElement, cityData);
+    if (cityData.cod === 200) {
+        displayWeather(mainCityElement, cityData);
+        document.querySelector("main .main-city .info").style.display = "block";
+        document.querySelector("main .main-city .weather-list").style.display = "block";
+        document.getElementById("main-loader").style.display = "none";
+    } else {
+        alert(cityData.cod + "\n" + cityData.message)
+    }
 }
 
 async function showError(error) {
     alert(error.message);
     await getWeather(requestWeatherCityData(stdCity));
-    displayWeather(mainCityElement, cityData);
+    // displayWeather(mainCityElement, cityData);
 }
 
 function getMainCityWeather() {
     navigator.geolocation.getCurrentPosition(setPosition, showError);
+    // alert(cityData.city);
+
+
 }
 
 
@@ -152,17 +160,40 @@ function getMainCityWeather() {
 async function form() {
     const formData = new FormData(document.getElementById('add-city'));
     const cityName = formData.get("city-name");
+
     if (cityName.length !== 0) {
-        alert(cityName);
+        let loader = document.getElementById("loader-wrapper");
+        loader.style.display = "block";
+
         await getWeather(requestWeatherCityData(cityName));
-        displayWeather(cityElement, cityData);
-        let clone = document.importNode(t.content, true);
-        cities[0].appendChild(clone);
-        // document.getElementById('add-city').action = requestCityData(cityName);
+
+        if (cityData.cod === 200) {
+            displayWeather(cityElement, cityData);
+            let clone = document.importNode(t.content, true);
+            loader.style.display = "none";
+            cities.insertBefore(clone, loader.nextSibling);
+        } else {
+            alert(cityData.cod + "\n" + cityData.message)
+            loader.style.display = "none";
+        }
+
     } else {
-        alert("no city");
+        alert("No city selected.");
     }
 }
+
+
+
+function refreshMainCity() {
+    console.log("refresh");
+
+    document.querySelector("main .main-city .info").style.display = "none";
+    document.querySelector("main .main-city .weather-list").style.display = "none";
+    document.getElementById("main-loader").style.display = "block";
+
+    getMainCityWeather();
+}
+
 
 
 

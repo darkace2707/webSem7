@@ -10,8 +10,9 @@
 <header>
      <h1  class="title">Погода здесь</h1>
 
-    <button class="refresh bigbtn"><span class="main-text">Обновить геолокацию</span><span class="sub-text">&#10227;</span></button>
-
+    <form id="refresh-city" method="get" onsubmit="refreshMainCity(); return false;">
+        <button class="refresh bigbtn"><span class="main-text">Обновить геолокацию</span><span class="sub-text">&#10227;</span></button>
+    </form>
     <div class="clearfix"></div>
 </header>
 <main>
@@ -47,6 +48,7 @@
             </li>
         </ul>
 
+        <div id="main-loader"></div>
     </section>
 
     <section class="favorites">
@@ -64,9 +66,11 @@
             </form>
         </div>
     </section>
-<!--    карточки списком-->
-    <ul class="cities">
 
+    <ul class="cities">
+        <div id="loader-wrapper">
+            <div id="loader"></div>
+        </div>
     </ul>
 </main>
 <template id="city-card">
