@@ -24,7 +24,6 @@ body {
     height: 100px;
     -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
-    /*background-color: #959d9e;*/
 }
 
 #main-loader {
@@ -354,6 +353,8 @@ main .cities .data .main-info .delete {
     color: white;
     text-align: center;
     /*flex-grow: 1;*/
+    outline: none;
+
 }
 
 main .cities .data .main-info .delete:hover {

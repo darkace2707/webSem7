@@ -2,7 +2,7 @@ const apiKey = "264ff3b567aeb96b74094339070df7ca";
 const kelvin = 273;
 const stdCity = "Saint Petersburg";
 
-const cityData = {
+let cityData = {
     city: "Moscow!",
     temperature: 6,
     incoID: "xx",
@@ -130,7 +130,6 @@ async function setPosition(position) {
     let latitude = position.coords.latitude;
     let longitude = position.coords.longitude;
     await getWeather(requestWeatherCoordinatesData(latitude, longitude));
-    // alert(cityData.city+'sp');
     // alert(cityData.city);
     if (cityData.cod === 200) {
         displayWeather(mainCityElement, cityData);
@@ -145,38 +144,44 @@ async function setPosition(position) {
 async function showError(error) {
     alert(error.message);
     await getWeather(requestWeatherCityData(stdCity));
-    // displayWeather(mainCityElement, cityData);
+    displayWeather(mainCityElement, cityData);
+    document.querySelector("main .main-city .info").style.display = "block";
+    document.querySelector("main .main-city .weather-list").style.display = "block";
+    document.getElementById("main-loader").style.display = "none";
 }
 
 function getMainCityWeather() {
     navigator.geolocation.getCurrentPosition(setPosition, showError);
-    // alert(cityData.city);
-
-
 }
 
+async function getCityCardWeather(cityName) {
+    let loader = document.getElementById("loader-wrapper");
+    loader.style.display = "block";
 
+    await getWeather(requestWeatherCityData(cityName));
 
-async function form() {
+    if (cityData.cod === 200) {
+        displayWeather(cityElement, cityData);
+        let clone = document.importNode(t.content, true);
+        loader.style.display = "none";
+        cities.insertBefore(clone, loader.nextSibling);
+
+        if (getCookie(cityData.city) === undefined) {
+            setCookie(cityData.city, cityData.city, {'max-age': 2592000});
+        }
+
+    } else {
+        alert(cityData.cod + "\n" + cityData.message);
+        loader.style.display = "none";
+    }
+}
+
+function form() {
     const formData = new FormData(document.getElementById('add-city'));
     const cityName = formData.get("city-name");
 
     if (cityName.length !== 0) {
-        let loader = document.getElementById("loader-wrapper");
-        loader.style.display = "block";
-
-        await getWeather(requestWeatherCityData(cityName));
-
-        if (cityData.cod === 200) {
-            displayWeather(cityElement, cityData);
-            let clone = document.importNode(t.content, true);
-            loader.style.display = "none";
-            cities.insertBefore(clone, loader.nextSibling);
-        } else {
-            alert(cityData.cod + "\n" + cityData.message)
-            loader.style.display = "none";
-        }
-
+        getCityCardWeather(cityName);
     } else {
         alert("No city selected.");
     }
@@ -196,15 +201,80 @@ function refreshMainCity() {
 
 
 
+function deleteCityCard(deleteButton) {
+    console.log("delete");
+    let cityCard = deleteButton.parentNode.parentNode;
+    deleteCookie(cityCard.querySelector(".main-info h3").innerHTML);
+    cityCard.parentNode.removeChild(cityCard);
+}
+
+
+
+function cookieToObject() {
+    let str = document.cookie.split('; ');
+    let result = {};
+    for (let i = 0; i < str.length; i++) {
+        let cur = str[i].split('=');
+        result[cur[0]] = cur[1];
+    }
+    return result;
+}
+
+
+
+function getCookie(name) {
+    name = encodeURIComponent(name);
+    let matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+    ));
+    return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
+
+
+function setCookie(name, value, options = {}) {
+
+    options = {
+        path: '/',
+        ...options
+    };
+
+    if (options.expires instanceof Date) {
+        options.expires = options.expires.toUTCString();
+    }
+
+    let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+    for (let optionKey in options) {
+        updatedCookie += "; " + optionKey;
+        let optionValue = options[optionKey];
+        if (optionValue !== true) {
+            updatedCookie += "=" + optionValue;
+        }
+    }
+
+    document.cookie = updatedCookie;
+}
+
+
+
+function deleteCookie(name) {
+    setCookie(name, "", {
+        'max-age': -1
+    })
+}
+
+
+
+async function getCardsWeather() {
+    for (let city of Object.keys(cookieToObject()).reverse()) {
+        await getCityCardWeather(city);
+        console.log(city);
+    }
+}
+
+
+
 
 getMainCityWeather();
-
-// let t = document.querySelector('#city-card');
-// console.log(cityElement.nameElement);
-// let clone = document.importNode(t.content, true);
-// let clone2 = document.importNode(t.content, true);
-// cities[0].appendChild(clone);
-// cities[0].appendChild(clone2);
-// console.log(cities[0]);
-// cityElement
-// console.log(formData);
+getCardsWeather();

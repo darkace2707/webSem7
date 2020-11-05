@@ -9,10 +9,7 @@
 <body>
 <header>
      <h1  class="title">Погода здесь</h1>
-
-    <form id="refresh-city" method="get" onsubmit="refreshMainCity(); return false;">
-        <button class="refresh bigbtn"><span class="main-text">Обновить геолокацию</span><span class="sub-text">&#10227;</span></button>
-    </form>
+    <button class="refresh bigbtn" onclick="refreshMainCity(); return false;"><span class="main-text">Обновить геолокацию</span><span class="sub-text">&#10227;</span></button>
     <div class="clearfix"></div>
 </header>
 <main>
@@ -79,7 +76,7 @@
             <h3>Moscow</h3>
             <span class="degrees">5&#8451;</span>
             <div class="weather-icon"><span>Иконка погоды</span></div>
-            <button class="delete" onclick="check()">&#10005;</button>
+            <button class="delete" onclick="deleteCityCard(this); return false;">&#10005;</button>
         </div>
         <ul class="weather-list">
             <li class="wind">
