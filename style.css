@@ -273,7 +273,7 @@ main .favorites .new-city input::placeholder {
     font-size: 22px;
 }
 
-main .favorites .new-city input[type=submit] {
+main .favorites .new-city button[type=submit] {
     border: 0;
     width: 46px;
     height: 46px;
