@@ -2,7 +2,7 @@ const apiKey = "264ff3b567aeb96b74094339070df7ca";
 const kelvin = 273;
 const stdCity = "Saint Petersburg";
 
-let firstLoadFlag = Boolean(true);
+// let firstLoadFlag = Boolean(true);
 
 let cityData = {
     city: "Moscow!",
@@ -157,30 +157,29 @@ function getMainCityWeather() {
     navigator.geolocation.getCurrentPosition(setPosition, showError);
 }
 
-async function getCityCardWeather(cityName) {
+async function getCityCardWeather(cityName, firstLoadFlag) {
     let loader = document.getElementById("loader-wrapper");
     loader.style.display = "block";
 
-    await getWeather(requestWeatherCityData(cityName));
+    if (localStorage.getItem(cityName) === null || firstLoadFlag) {
+        console.log("first");
+        await getWeather(requestWeatherCityData(cityName));
 
-    if (cityData.cod === 200) {
-        displayWeather(cityElement, cityData);
-        let clone = document.importNode(t.content, true);
-        loader.style.display = "none";
+        if (cityData.cod === 200) {
+            displayWeather(cityElement, cityData);
+            let clone = document.importNode(t.content, true);
+            loader.style.display = "none";
 
-        if (firstLoadFlag) {
             cities.insertBefore(clone, loader.nextSibling);
             document.getElementsByClassName("delete")[0].addEventListener("click", deleteCityCard);
-        } else if (localStorage.getItem(cityData.city) === null) {
-            cities.insertBefore(clone, loader.nextSibling);
-            localStorage.setItem(cityData.city, cityData.city);
-            document.getElementsByClassName("delete")[0].addEventListener("click", deleteCityCard);
+            if (!firstLoadFlag) localStorage.setItem(cityData.city, cityData.city);
+
         } else {
-            alert("City is in the list.")
+            alert(cityData.cod + "\n" + cityData.message);
+            loader.style.display = "none";
         }
-
-    } else {
-        alert(cityData.cod + "\n" + cityData.message);
+    } else if (localStorage.getItem(cityName) !== null && !firstLoadFlag) {
+        alert("City is in the list.");
         loader.style.display = "none";
     }
 
@@ -191,15 +190,15 @@ async function getCityCardWeather(cityName) {
 function form(event) {
     console.log(event.path[0]);
     const formData = new FormData(event.path[0]);
-    const cityName = formData.get("city-name");
+    const cityName = capitalizeWords(formData.get("city-name").toLowerCase());
+    console.log(cityName);
     event.path[0].reset();
     if (cityName.length !== 0) {
-        getCityCardWeather(cityName);
+        getCityCardWeather(cityName, false);
     } else {
         alert("No city selected.");
     }
     event.preventDefault();
-    // return false;
 }
 
 
@@ -229,7 +228,7 @@ function deleteCityCard(event) {
 async function getCardsWeather() {
     for(let i = localStorage.length - 1; i >= 0; i--) {
         let city = localStorage.key(i);
-        await getCityCardWeather(city);
+        await getCityCardWeather(city,true);
     }
     firstLoadFlag = false;
 }
@@ -247,6 +246,7 @@ function offline() {
         loaderWrapper.style.display = "none";
     }
     console.log("you're offline");
+    alert("Connection lost.");
 }
 
 
