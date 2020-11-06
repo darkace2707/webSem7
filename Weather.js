@@ -267,7 +267,8 @@ function deleteCookie(name) {
 
 
 async function getCardsWeather() {
-    for (let city of Object.keys(cookieToObject()).reverse()) {
+    let cities = Object.keys(cookieToObject()).reverse();
+    for (let city of cities) {
         await getCityCardWeather(city);
         console.log(city);
     }
@@ -277,4 +278,6 @@ async function getCardsWeather() {
 
 
 getMainCityWeather();
-getCardsWeather();
+if (document.cookie !== "") {
+    getCardsWeather();
+}
