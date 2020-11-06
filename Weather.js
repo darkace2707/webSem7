@@ -170,11 +170,11 @@ async function getCityCardWeather(cityName) {
 
         if (firstLoadFlag) {
             cities.insertBefore(clone, loader.nextSibling);
-            document.getElementsByClassName("delete")[0].addEventListener("click", function () {deleteCityCard(this)} );
+            document.getElementsByClassName("delete")[0].addEventListener("click", deleteCityCard);
         } else if (localStorage.getItem(cityData.city) === null) {
             cities.insertBefore(clone, loader.nextSibling);
             localStorage.setItem(cityData.city, cityData.city);
-            document.getElementsByClassName("delete")[0].addEventListener("click", function () {deleteCityCard(this)} );
+            document.getElementsByClassName("delete")[0].addEventListener("click", deleteCityCard);
         } else {
             alert("City is in the list.")
         }
@@ -216,7 +216,8 @@ function refreshMainCity() {
 
 
 
-function deleteCityCard(deleteButton) {
+function deleteCityCard(event) {
+    deleteButton = event.path[0];
     console.log("delete");
     let cityCard = deleteButton.parentNode.parentNode;
     localStorage.removeItem(cityCard.querySelector(".main-info h3").innerHTML);
