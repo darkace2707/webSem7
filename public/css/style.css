@@ -273,6 +273,10 @@ main .favorites .new-city input::placeholder {
     font-size: 22px;
 }
 
+#hiddenbtn {
+    display: none;
+}
+
 main .favorites .new-city button[type=submit] {
     border: 0;
     width: 46px;

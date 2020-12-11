@@ -7,7 +7,7 @@ const stdCity = "Saint Petersburg";
 let cityData = {
     city: "Moscow!",
     temperature: 6,
-    incoID: "xx",
+    iconID: "xx",
     wind: {
         speed: 61.0,
         direction: "North1-northwest"
@@ -188,17 +188,20 @@ async function getCityCardWeather(cityName, firstLoadFlag) {
 
 
 function form(event) {
+
     console.log(event.path[0]);
     const formData = new FormData(event.path[0]);
     const cityName = capitalizeWords(formData.get("city-name").toLowerCase());
     console.log(cityName);
     event.path[0].reset();
+    event.preventDefault();
     if (cityName.length !== 0) {
         getCityCardWeather(cityName, false);
     } else {
         alert("No city selected.");
     }
-    event.preventDefault();
+
+    return false;
 }
 
 
